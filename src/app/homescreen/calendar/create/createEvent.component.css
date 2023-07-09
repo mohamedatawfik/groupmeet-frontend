@@ -1,0 +1,19 @@
+.form-card{
+    width: 30%;
+    /* max-width: 400px; */
+    margin: 0 auto;
+    margin-top: 100px;
+    padding: 20px;
+    /* border-radius: 10px; */
+    /* background-color: #fff; */
+    /* box-shadow: 0 0 10px 0 rgba(0,0,0,0.2); */
+    display: flex;
+}
+
+.tab-card{
+    padding: 20px;
+}
+
+.action-btn{
+  margin-left: auto;
+}

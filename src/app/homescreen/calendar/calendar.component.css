@@ -1,0 +1,13 @@
+b { /* used for event dates/times */
+  margin-right: 3px;
+}
+
+.demo-calendar-main {
+  flex-grow: 1;
+  padding: 3em;
+}
+
+.fc { /* the calendar root */
+  max-width: 80%;
+  margin: 0 auto;
+}

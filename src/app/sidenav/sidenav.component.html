@@ -1,0 +1,19 @@
+<mat-drawer-container class="sidenav-wrapper">
+    <mat-drawer mode="side" opened>
+        <mat-nav-list class="list">
+            <a mat-list-item *ngFor="let link of links" [routerLink]="link.route" routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }">
+                <mat-icon>{{link.icon}}</mat-icon>
+                {{ link.label }}
+            </a>
+        </mat-nav-list>
+        <button mat-fab extended class="create-button" color="primary" (click)="onCreate()" >
+            <mat-icon>event</mat-icon>
+            create
+        </button>
+    </mat-drawer>
+    <mat-drawer-content>
+        <router-outlet></router-outlet>
+    <br/>
+    </mat-drawer-content>
+</mat-drawer-container>

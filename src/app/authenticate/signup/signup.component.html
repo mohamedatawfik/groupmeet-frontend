@@ -1,0 +1,38 @@
+<mat-card class="login-card">
+    <mat-card-header>
+      <mat-card-title class="title">
+        GroupMeet
+      </mat-card-title>
+    </mat-card-header>
+    <mat-divider></mat-divider>
+    <form #form="ngForm" id="loginForm">
+    <mat-card-content class="content">
+        <mat-form-field>
+          <mat-label>Name</mat-label>
+          <input matInput type="text" name="name" ngModel required #name="ngModel">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Email</mat-label>
+          <input matInput type="email" name="email" ngModel required #email="ngModel">
+        </mat-form-field>
+  
+        <mat-form-field>
+          <mat-label>password</mat-label>
+          <input matInput type="password" name="password" ngModel required #password="ngModel">
+        </mat-form-field>
+
+
+        <mat-form-field>
+          <mat-label>confirm password</mat-label>
+          <input matInput type="password" name="confirmPassword" ngModel required #confirmPassword="ngModel">
+        </mat-form-field>
+    </mat-card-content>
+  
+    <mat-card-actions class="actions">
+      <button mat-button class="button" (click)="loginAction()">Already registered?</button>
+      <button mat-raised-button class="button" color="primary" (click)="signupAction($event, form)" prevent>Sign Up</button>
+    </mat-card-actions>
+    </form>
+  </mat-card>
+  

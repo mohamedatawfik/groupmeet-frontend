@@ -1,0 +1,55 @@
+
+<div class='demo-app'>
+
+  <div class='demo-app-sidebar'>
+    <div class='demo-app-sidebar-section'>
+      <h2>All Events</h2>
+      <ul>
+        <li *ngFor='let event of currentEvents()'>
+          <b>{{event.start}}</b>
+          <b>{{event.end}}</b>
+          <i style="color:rgb(27, 35, 138); font-size: 15px;">{{event.title}}</i>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div *ngIf="calendarVisible()" class='demo-app-main'>
+    <full-calendar [options]='calendarOptions'>
+      <ng-template #eventContent let-arg>
+        <b>{{ arg.timeText }}</b>
+        <i>{{ arg.event.title }}</i>
+      </ng-template>
+    </full-calendar>
+  </div>
+
+  <ng-template let-data #addEventDialog>
+    <h2 mat-dialog-title>Event Details</h2>
+    <div mat-dialog-content>
+      <p>Title:
+        <mat-form-field appearance="fill">
+          <input matInput [(ngModel)]="data.title" placeholder="Enter event title">
+        </mat-form-field>
+      </p>
+      <form>
+        <p>Group: <mat-form-field>
+          <mat-label>Select a group</mat-label>
+          <select matNativeControl [(ngModel)]="data.group" name="group">
+            <option value="" selected></option>
+            <option *ngFor="let group of groups" [value]="group.name">
+              {{group.name}}
+            </option>
+          </select>
+        </mat-form-field>
+        </p>
+
+      </form>
+
+    </div>
+    <div mat-dialog-actions>
+      <button mat-button (click)="onCancelDialog()">Cancel</button>
+      <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Add</button>
+    </div>
+  </ng-template>
+
+</div>

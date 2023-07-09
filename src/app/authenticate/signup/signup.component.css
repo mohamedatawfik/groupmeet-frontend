@@ -1,0 +1,40 @@
+.login-card{
+    width: 30%;
+    max-width: 400px;
+    margin: 0 auto;
+    margin-top: 100px;
+    padding: 20px;
+    /* border-radius: 10px; */
+    /* background-color: #fff; */
+    /* box-shadow: 0 0 10px 0 rgba(0,0,0,0.2); */
+    display: flex;
+}
+
+.login-card .title{
+    text-align: center;
+    margin-bottom: 15px;
+    /* width: 400px; */
+    font-size: 30px;
+}
+
+.login-card .content{
+    display: flex;
+    flex-direction: column;
+
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.login-card .actions{
+    display: flex;
+    justify-content: space-between;
+    justify-items: space-between;
+    align-items: space-between;
+    text-align: center;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.login-card .actions .button{
+    width: 35%;
+}

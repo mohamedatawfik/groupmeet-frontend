@@ -1,0 +1,81 @@
+<div class="group-list-container">
+  <div class="group-list">
+    <h2>My Groups</h2>
+    <mat-list>
+      <mat-list-item *ngFor="let group of groups" >
+        <div class="group-info">
+          <span class="group-name" (click)="openGroupMembersDialog(group)">{{ group.name }}</span>
+          <div class="group-actions">
+            <button mat-icon-button (click)="deleteGroup(group.name)">
+              <mat-icon >delete</mat-icon>
+            </button>
+            <button mat-icon-button (click)="openAddMemberDialog(group.name)">
+              <mat-icon>person_add</mat-icon>
+            </button>
+          </div>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </div>
+
+  <div class="input-container">
+  <h3>Create a New Group</h3>
+    <mat-form-field appearance="fill">
+      <input class ='mat-input-element' matInput ngModel  #name="ngModel" placeholder="Group Name">
+    </mat-form-field>
+    <!-- <button mat-raised-button color="primary" (click)="createGroup()">Create</button> -->
+    <button mat-icon-button (click)="createGroup(name)">
+      <mat-icon>group_add</mat-icon>
+    </button>
+  </div>
+
+  <ng-template #groupMembersDialog let-group>
+    <h2 mat-dialog-title>Members</h2>
+    <mat-dialog-content>
+      <div *ngIf="getGroupMembers(group.name).length > 0; else noMembers">
+        <!-- <p *ngFor="let member of getGroupMembers(group.name)">{{ member }}</p> -->
+        <div *ngFor="let member of getGroupMembers(group.name)">
+        <span class="member-name">
+          {{ member }}
+          <button class="remove-member-button" (click)="removeMember(group.name, member)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </span>
+        </div>
+      </div>
+      <ng-template #noMembers>
+        <p>No members found.</p>
+      </ng-template>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close>Close</button>
+    </mat-dialog-actions>
+  </ng-template>
+  
+  <ng-template let-data #addMemberDialog>
+    <h2 mat-dialog-title>{{data.groupName}}</h2>
+    <h2 mat-dialog-title>User Details</h2>
+    <div mat-dialog-content>
+      <p>Mail:
+        <mat-form-field appearance="fill">
+          <input matInput ngModel #email="ngModel" placeholder="Enter member mail">
+        </mat-form-field>
+      </p>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-button (click)="onCancelAddDialog()">Cancel</button>
+      <button mat-button (click)="onDialogAddAction(email, data.groupName)" cdkFocusInitial>Add</button>
+    </div>
+  </ng-template>
+
+  <ng-template let-data #addMemberErrorDialog>
+    <h2 mat-dialog-title>User Details</h2>
+    <div mat-dialog-content>
+      <h3>User not found. Please verify the email address.</h3>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-button (click)="onCancelAddErrorDialog()">Cancel</button>
+    </div>
+  </ng-template>
+
+</div>

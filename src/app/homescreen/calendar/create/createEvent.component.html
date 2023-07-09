@@ -1,0 +1,103 @@
+<mat-card class="form-card">
+    <mat-card-header>
+        <mat-card-title>
+            Create Event
+        </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+        <mat-tab-group>
+            <mat-tab label="Private">
+                <mat-card class="tab-card">
+
+                    <mat-form-field>
+                        <mat-label>Title</mat-label>
+                        <input matInput type="text">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Day</mat-label>
+                        <input matInput [matDatepicker]="datepicker">
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
+                        <mat-datepicker #datepicker>
+                            <mat-datepicker-actions>
+                                <button mat-button matDatepickerCancel>Cancel</button>
+                                <button mat-raised-button color="primary" matDatepickerApply>Apply</button>
+                            </mat-datepicker-actions>
+                        </mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>From</mat-label>
+                        <input matInput [format]="24" [ngxMatTimepicker]="pickerE" />
+                        <mat-icon matSuffix (click)="pickerE.open()">watch_later</mat-icon>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>To</mat-label>
+                        <input matInput [format]="24" [ngxMatTimepicker]="pickerE" />
+                        <mat-icon matSuffix (click)="pickerE.open()">watch_later</mat-icon>
+                    </mat-form-field>
+                    <ngx-mat-timepicker #pickerE></ngx-mat-timepicker>
+
+                    <mat-card-actions>
+                        <button class="action-btn" mat-raised-button color="primary">Create</button>
+                    </mat-card-actions>
+
+                    <mat-card-footer>
+                        * Parivate events are used to block out time on your calendar. They are not visible to other
+                        users.
+                    </mat-card-footer>
+
+                </mat-card>
+            </mat-tab>
+
+
+            <mat-tab label="Group">
+                <mat-card class="tab-card">
+                    <mat-form-field>
+                        <mat-label>Title</mat-label>
+                        <input matInput type="text">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Group</mat-label>
+                        <input type="text" aria-label="Group" matInput [formControl]="myControl">
+                        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                                
+                                {{option}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Enter a date range for meeting</mat-label>
+                        <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+                            <input matStartDate formControlName="start">
+                            <input matEndDate formControlName="end">
+                        </mat-date-range-input>
+                        <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+
+                        <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start
+                            date</mat-error>
+                        <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+                    </mat-form-field>
+
+
+                    <mat-card-actions>
+                        <button class="action-btn" mat-raised-button color="primary">Create</button>
+                    </mat-card-actions>
+
+                    <mat-card-footer>
+                        Event time is chosen automatically based on the availability of the group members within the
+                        defined dates
+                    </mat-card-footer>
+                </mat-card>
+            </mat-tab>
+
+        </mat-tab-group>
+    </mat-card-content>
+</mat-card>
