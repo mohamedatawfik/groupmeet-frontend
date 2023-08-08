@@ -66,7 +66,7 @@ export class CalendarComponent {
   chosen_group:any = '';
   cur_user = localStorage.getItem('token');
 
-  constructor(private httpClient: HttpClient, private dialogRef: MatDialog) { 
+  constructor(private httpClient: HttpClient, private dialogRef: MatDialog, private snackBar: MatSnackBar) { 
   }
   ngOnInit() {
     this.getGroups().subscribe(data => this.groups = data);
@@ -80,7 +80,7 @@ export class CalendarComponent {
     console.log(this.user_events[i]['title'])
     console.log(this.user_events[i]['start'])
     console.log(this.user_events[i]['end'])
-     this.INITIAL_EVENTS.push({id:String(1), title: this.user_events[i]['title'], start: this.user_events[i]['start'], end: this.user_events[i]['end']})
+     this.INITIAL_EVENTS.push({id:String(eventGuid), title: this.user_events[i]['title']+'/'+this.user_events[i]['creator'], start: this.user_events[i]['start'], end: this.user_events[i]['end']})
      eventGuid++;
    }  
 
@@ -105,7 +105,7 @@ export class CalendarComponent {
     selectable: true,
     selectMirror: true,
     dayMaxEvents: true,
-    select: this.handleDateSelect.bind(this),
+    // select: this.handleDateSelect.bind(this),
     eventClick: this.handleEventClick.bind(this),
     eventsSet: this.handleEvents.bind(this)
   };
@@ -134,32 +134,58 @@ export class CalendarComponent {
     console.log(data);
     return this.httpClient.post<any>(environment.API_URL + "/events/", data);
   }
+
+  deleteEventReq(title: string, cur_user:any) {
+    return this.httpClient.delete<any>(environment.API_URL + "/events/" + title + '/' + cur_user);
+  }
+
+  getSingleEvent(title: string, creator:string) {
+    return this.httpClient.get<string>(environment.API_URL + "/events/" + title + '/' + creator);
+  }
  
 
   dialog: any;
   @ViewChild('addEventDialog') eventDialog = {} as TemplateRef<any>;
+  @ViewChild('dispEventDialog') dispEventDialog = {} as TemplateRef<any>;
   currentEvents = signal<EventApi[]>([]);
   eventDetails = {title:'', group:''};
+  singleEventName: string = '';
 
+  doGetSingleEvent(title:string, creator:string)
+  {
+    this.getSingleEvent(title,creator).subscribe({
+      next: (res) => {
+        console.log("RES",res)
+        this.singleEventName = res
+        // alert("Group Added Successfully");
+      },
+      error: (res) => {
+        // alert("Error while adding the group !!!")
+      }
+    })
+
+  }
   // constructor(private changeDetector: ChangeDetectorRef) {
   // }
 
-  async handleDateSelect(selectInfo: DateSelectArg) {
+  // async handleDateSelect(selectInfo: DateSelectArg) {
     
-    const st = await this.openAddEventDialog(selectInfo);
-    const title = this.eventDetails.title;
-    const calendarApi = selectInfo.view.calendar;
+  //   const st = await this.openAddEventDialog(selectInfo);
+  //   const title = this.eventDetails.title;
+  //   const calendarApi = selectInfo.view.calendar;
 
-    // calendarApi.unselect(); // clear date selection
-    console.log(selectInfo);
+  //   // calendarApi.unselect(); // clear date selection
+  //   console.log(selectInfo);
 
-    this.eventDetails = {title:'', group: ''};
-  }
+  //   this.eventDetails = {title:'', group: ''};
+  // }
 
-  handleEventClick(clickInfo: EventClickArg) {
-    if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-      clickInfo.event.remove();
-    }
+  async handleEventClick(clickInfo: EventClickArg) {
+    const st = await this.openDispEventDialog(clickInfo);
+    console.log(clickInfo.event.title)
+    // if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
+    //   clickInfo.event.remove();
+    // }
   }
 
   handleEvents(events: EventApi[]) {
@@ -167,29 +193,57 @@ export class CalendarComponent {
     // this.changeDetector.detectChanges(); // workaround for pressionChangedAfterItHasBeenCheckedError
   }
 
-  async openAddEventDialog(selectInfo: any) {
-    this.dialog = this.dialogRef.open(this.eventDialog,
-      { data: this.eventDetails, height: '350px', width: '350px' });
-      console.log('Here');
-      await this.dialog.afterClosed().toPromise().then((result: any) => {
-        console.log(result);
-        if (result.title.trim() != '' && result.group.trim() != '') {
+  async openDispEventDialog(clickInfo: any) {
+    var title_creator = clickInfo.event.title.split('/');
+    var title = title_creator[0];
+    var creator = title_creator[1];
+    var start = clickInfo.event.startStr;
+    var end = clickInfo.event.endStr;
+    this.getSingleEvent(title,creator).subscribe({
 
-          this.PostEvent(this.eventDetails.title, this.eventDetails.group, selectInfo).subscribe({
+      next: async (res) => {
+        console.log("RES",res)
+        this.singleEventName = res
+        if(!res)
+        res = "Private Appointment"
+        var data = {"title": title, "creator": creator, "start": start, "end": end, "group": res}
+    this.dialog = this.dialogRef.open(this.dispEventDialog,
+      { data: data, height: '350px', width: '500px' });
+      console.log('Here');
+      await this.dialog.afterClosed().subscribe((result: any) => {
+        if(result=='D'){
+          this.deleteEventReq(title, this.cur_user).subscribe({
             next: (res) => {
               window.location.reload();
             },
             error: () => {
               // this.openAddMemberErrorDialog();
-              alert("Error while adding the event, please try again");
+              this.snackBar.open('You need admin rights to delete this event', 'Dismiss');
+
             }
-          });
-        }
+          });}
       });
 
+      },
+
+      error: (res) => {
+        // alert("Error while adding the group !!!")
+      }
+    })
+    
+
   }
-  onCancelDialog() {
-    this.dialog.close();
+
+  closeD() {
+    this.onCancelDialog('D')
+  }
+
+  closeC() {
+    this.onCancelDialog('C');
+  }
+
+  onCancelDialog(button: 'C' | 'D') {
+    this.dialog.close(button);
   }
 
 }
