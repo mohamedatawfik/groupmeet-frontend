@@ -23,7 +23,6 @@
     <mat-form-field appearance="fill">
       <input class ='mat-input-element' matInput ngModel  #name="ngModel" placeholder="Group Name">
     </mat-form-field>
-    <!-- <button mat-raised-button color="primary" (click)="createGroup()">Create</button> -->
     <button mat-icon-button (click)="createGroup(name)">
       <mat-icon>group_add</mat-icon>
     </button>
@@ -33,7 +32,6 @@
     <h2 mat-dialog-title>Members</h2>
     <mat-dialog-content>
       <div *ngIf="getGroupMembers(group.name).length > 0; else noMembers">
-        <!-- <p *ngFor="let member of getGroupMembers(group.name)">{{ member }}</p> -->
         <div *ngFor="let member of getGroupMembers(group.name)">
         <span class="member-name">
           {{ member }}

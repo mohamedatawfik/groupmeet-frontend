@@ -69,10 +69,12 @@ export class CalendarComponent {
   constructor(private httpClient: HttpClient, private dialogRef: MatDialog, private snackBar: MatSnackBar) { 
   }
   ngOnInit() {
+    //get all groups of current user
     this.getGroups().subscribe(data => this.groups = data);
+    //get all events of current user
     this.getEvents().subscribe(data => this.user_events = data);
 
-    
+    //initilize the calnedar events with the current user events 
     setTimeout(() => {
       let eventGuid = 0;
       for(let i = 0; i<this.user_events.length;i++)
@@ -99,13 +101,11 @@ export class CalendarComponent {
     },
     initialView: 'dayGridMonth',
     events: this.INITIAL_EVENTS,
-    // initialEvents: new INITS(this.httpClient, this.dialogRef).INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
     weekends: true,
     editable: true,
     selectable: true,
     selectMirror: true,
     dayMaxEvents: true,
-    // select: this.handleDateSelect.bind(this),
     eventClick: this.handleEventClick.bind(this),
     eventsSet: this.handleEvents.bind(this)
   };
@@ -116,7 +116,6 @@ export class CalendarComponent {
   console.log(this.calendarOptions)
        }, 1000);
        
-    // console.log('het',new INITS(this.httpClient, this.dialogRef).doGet())
   }
 
   getGroups(): Observable<Group[]> {
@@ -157,40 +156,22 @@ export class CalendarComponent {
       next: (res) => {
         console.log("RES",res)
         this.singleEventName = res
-        // alert("Group Added Successfully");
       },
       error: (res) => {
-        // alert("Error while adding the group !!!")
       }
     })
 
   }
-  // constructor(private changeDetector: ChangeDetectorRef) {
-  // }
-
-  // async handleDateSelect(selectInfo: DateSelectArg) {
-    
-  //   const st = await this.openAddEventDialog(selectInfo);
-  //   const title = this.eventDetails.title;
-  //   const calendarApi = selectInfo.view.calendar;
-
-  //   // calendarApi.unselect(); // clear date selection
-  //   console.log(selectInfo);
-
-  //   this.eventDetails = {title:'', group: ''};
-  // }
+ 
 
   async handleEventClick(clickInfo: EventClickArg) {
     const st = await this.openDispEventDialog(clickInfo);
     console.log(clickInfo.event.title)
-    // if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-    //   clickInfo.event.remove();
-    // }
+   
   }
 
   handleEvents(events: EventApi[]) {
     this.currentEvents.set(events);
-    // this.changeDetector.detectChanges(); // workaround for pressionChangedAfterItHasBeenCheckedError
   }
 
   async openDispEventDialog(clickInfo: any) {
@@ -217,7 +198,6 @@ export class CalendarComponent {
               window.location.reload();
             },
             error: () => {
-              // this.openAddMemberErrorDialog();
               this.snackBar.open('You need admin rights to delete this event', 'Dismiss');
 
             }
@@ -227,7 +207,6 @@ export class CalendarComponent {
       },
 
       error: (res) => {
-        // alert("Error while adding the group !!!")
       }
     })
     

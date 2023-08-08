@@ -103,11 +103,9 @@ export class GroupsManagementComponent {
       .subscribe({
         next: (res) => {
           this.snackBar.open(res.message, "Dismiss");
-          // alert("Group Added Successfully");
         },
         error: (res) => {
           this.snackBar.open(res.error.error, "Dismiss");
-          // alert("Error while adding the group !!!")
         }
       })
     window.location.reload();
@@ -120,11 +118,9 @@ export class GroupsManagementComponent {
       .subscribe({
         next: (res) => {
           this.snackBar.open(res.message, "Dismiss");
-          // alert("Group Deleted Successfully");
         },
         error: (res) => {
           this.snackBar.open(res.error.error, "Dismiss");
-          // alert("Error while deleteing the group !!!")
         }
       })
     window.location.reload();
@@ -164,7 +160,6 @@ export class GroupsManagementComponent {
           },
           error: () => {
             this.openAddMemberErrorDialog(groupName);
-            // alert("No such user found, please check the email address")
           }
         });
       }
@@ -182,8 +177,6 @@ export class GroupsManagementComponent {
         error: (res) => {
           console.log(res);
           this.snackBar.open(res.error.error, 'Dismiss');
-          // this.openAddMemberErrorDialog(groupName);
-          // alert("No such user found, please check the email address")
         }
       });
     }
@@ -209,11 +202,9 @@ export class GroupsManagementComponent {
       .subscribe({
         next: (res) => {
           this.snackBar.open('Member Deleted Successfully', 'Dismiss');
-          // alert("Member Deleted Successfully");
         },
         error: () => {
           this.snackBar.open('Error while deleteing the Member', 'Dismiss');
-          // alert("Error while deleteing the Member !!!")
         }
       })
     window.location.reload();

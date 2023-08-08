@@ -5,7 +5,6 @@
     <div *ngIf="isLoggedIn(); then home else auth"></div>
     <ng-template #home>
       <app-sidenav></app-sidenav>
-      <!-- <app-navigation-tabs></app-navigation-tabs> -->
     </ng-template>
     <ng-template #auth>
       <router-outlet></router-outlet>

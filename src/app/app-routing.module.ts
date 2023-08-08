@@ -12,7 +12,6 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'home', redirectTo: '/groups', pathMatch: 'full' },
-  // { path: 'home', component: SidenavComponent },
   { path: 'groups', component: GroupsManagementComponent },
   { path: 'calendar', component: CalendarComponent },
   { path: 'calendar/create', component: CreateEventComponent },

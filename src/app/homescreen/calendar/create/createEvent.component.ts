@@ -62,18 +62,12 @@ export class CreateEventComponent {
     }
     
     PostEvent(eventTitle: any, eventGroup: string, start:Date, end:Date, duration:string) {
-      // const str_date = new Date(selectInfo.startStr).toISOString().replace(/T.*$/, '')+ 'T13:00:00';
-      // const end_date = new Date(selectInfo.startStr).toISOString().replace(/T.*$/, '')+ 'T15:00:00';
-      
       let data = {title: eventTitle, group: eventGroup, start:start, end:end, user_mail:this.cur_user,duration:duration}
       console.log(data);
       return this.httpClient.post<any>(environment.API_URL + "/events/groupevent", data);
     }
 
-    //  {"title": "TestPrivate", "start": "2023-07-19T13:00:00" ,"end": "2023-07-19T15:00:00", "user_mail": "Atef"}
     PostPrivateEvent(eventTitle: any, start:Date, end:Date) {
-      // const str_date = new Date(selectInfo.startStr).toISOString().replace(/T.*$/, '')+ 'T13:00:00';
-      // const end_date = new Date(selectInfo.startStr).toISOString().replace(/T.*$/, '')+ 'T15:00:00';
       
       let data = {title: eventTitle, start:start, end:end, user_mail:this.cur_user}
       console.log(data);
@@ -94,6 +88,7 @@ export class CreateEventComponent {
     constructor(private httpClient: HttpClient, private snackBar: MatSnackBar) {
     }
 
+    // get all groups of the current user 
     ngOnInit() {
     this.getGroups().subscribe(data => this.userGroups = data);
       }
@@ -111,7 +106,6 @@ export class CreateEventComponent {
         this.PostEvent(form.value.title, form.value.group, this.group_meet_start, this.group_meet_end, this.chosen_durartion).subscribe({
           next: (res) => {
             this.snackBar.open('Event added successfully', 'Dismiss');
-            // window.location.reload();
             
           },
           error: () => {
@@ -140,7 +134,6 @@ export class CreateEventComponent {
           next: (res) => {
             this.snackBar.open('Event added successfully', 'Dismiss');
 
-            // window.location.reload();
           },
           error: () => {
             this.snackBar.open('something went wrong please try again', 'Dismiss');
